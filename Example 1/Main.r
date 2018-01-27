@@ -30,7 +30,7 @@ dPriorBE     <- 0.8
 
 # Decision criteria  At the end of the study E will be selected if
 # Pr( Q_E > E_S | data ) > dPU
-dPU             <- 0.95   
+dPU             <- 0.90   
 
 
 #Create the "true" paramter values for a scenario
@@ -56,8 +56,6 @@ for( i in 1:nQtyReps )
    
     vResults[ i ]   <- lSimulatedTrial$nDecision
     mQtyPats[ i, ]  <- lSimulatedTrial$vQtyPats
-   
-        
 }
 
 

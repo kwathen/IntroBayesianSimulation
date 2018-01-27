@@ -2,21 +2,20 @@
 #   This file contains functions for simulating a virtual trial.
 ########################################################################
 
-SimulateSingleTrial <- function( nMaxQtyOfPats,
-                                 dQtyPatsPerMonth,
-                                 dPriorAS,
-                                 dPriorBS,
-                                 dPriorAE,
-                                 dPriorBE,
+SimulateSingleTrial <- function( nMaxQtyOfPats, dQtyPatsPerMonth,
+                                 dPriorAS, dPriorBS,
+                                 dPriorAE, dPriorBE,
                                  dPU,
                                  dTrueRespRateS,
                                  dTrueRespRateE
                                  )
 {
+    #Setup the variables needed in this function
     vPatOutcome <- rep( NA, nMaxQtyOfPats )       # Vector that contians the patients outcome
     vTreat      <- rep( NA, nMaxQtyOfPats )       # Vector that contains the patients treatment S = 0, E = 1
     vQtyPats    <- rep( 0, 2 )                    # Vector to keep track of the number of patients on S and E 
     
+    #Simulate arrival times and times the outcomes are observed
     vStartTime  <- SimulateArrivalTimes(dQtyPatsPerMonth, nMaxQtyOfPats )
     vObsTime    <- vStartTime + 1  # Note: In this example we observe the outcome 1 month after they enroll (or are treated)
     
