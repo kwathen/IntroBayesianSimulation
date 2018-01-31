@@ -19,6 +19,7 @@ source( "Randomizer.R")
 # changing values in the program
 
 nMaxQtyOfPats       <- 200      # The maximum quantity of patients to enrol in the study
+nMinQtyOfPats       <- 20       # The minimum number of patients enrolled before the trail adapts or stops for futility/superiority
 dQtyPatsPerMonth    <- 7.5      # Number of patients that will be enrolled each month, expectation is 7.5 patients per month
 
 #Priors: Q_S ~ Beta( 0.2, 0.8 ); Q_E ~ Beta( 0.2, 0.8 )
@@ -33,15 +34,20 @@ dPriorBE     <- 0.8
 dPU             <- 0.90   
 
 
-#Create the "true" parameter values for a scenario
+#Create the "true" parameter values for a scenario -  for this example we are simulating the null case, eg both treatments
+#have the same true response rate.  
 dTrueRespRateS  <- 0.2      # A true response rate of 0.2 for S
-dTrueRespRateE  <- 0.2      # A true response rate of 0.4 for E
+dTrueRespRateE  <- 0.2      # A true response rate of 0.2 for E
 
-nQtyReps        <- 10     # The number of virtual trials to simulate
+nQtyReps        <- 1000     # The number of virtual trials to simulate
 
 #It is often best to simulate a single trial and look at the result many times, before launching a loop with many virtual trial
-lSimulatedTrial <- SimulateSingleTrial( nMaxQtyOfPats,  dQtyPatsPerMonth,  dPriorAS,  dPriorBS, dPriorAE, dPriorBE,  
+lSimulatedTrial <- SimulateSingleTrial( nMaxQtyOfPats,  nMinQtyOfPats, dQtyPatsPerMonth,  dPriorAS,  dPriorBS, dPriorAE, dPriorBE,  
                                         dPU, dTrueRespRateS, dTrueRespRateE  )
+
+#It is often very educational to simulate several trial and plot the randomization probabilities
+plot( 1:nMaxQtyOfPats, lSimulatedTrial$vRandProbE, type='l', xlab="Patient", ylab="Randomization Probability E", ylim=c(0,1), lwd=2, main =vMain[nSeed] )
+abline( h=0.5, v=20, lty=3)
 
 
 vResults <- rep( NA, nQtyReps )
@@ -50,8 +56,12 @@ mQtyPats <- matrix( NA, ncol=2, nrow = nQtyReps)
 i<-1
 for( i in 1:nQtyReps )
 {
-    
-    lSimulatedTrial <- SimulateSingleTrial( nMaxQtyOfPats,  dQtyPatsPerMonth,  dPriorAS,  dPriorBS, dPriorAE, dPriorBE,  
+    #It is often nice to provide feedback to users what stage of the simulation we are on.
+    nNotify <- round( nQtyReps*0.1,0)
+    if( i %% nNotify == 0 )
+        print( paste( "Simulating virtual trial ", i, " of ", nQtyReps, " virtual trials."))
+        
+    lSimulatedTrial <- SimulateSingleTrial( nMaxQtyOfPats,  nMinQtyOfPats, dQtyPatsPerMonth,  dPriorAS,  dPriorBS, dPriorAE, dPriorBE,  
                                             dPU, dTrueRespRateS, dTrueRespRateE  )
    
     vResults[ i ]   <- lSimulatedTrial$nDecision

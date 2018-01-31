@@ -1,7 +1,7 @@
 
 #####################################################################################
 #   Function to get the treatment for a patient.
-#   dProbTrt1 = probabity that patients receive treatment 1 (in this case E)
+#   dProbTrt1 = probability that patients receive treatment 1 (in this case E)
 #####################################################################################
 GetTreatment <- function( dProbTrt1 )
 {

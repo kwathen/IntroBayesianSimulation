@@ -11,15 +11,24 @@ RunAnalysis <- function(  dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,
     dPostAE <- dPriorAE
     dPostBE <- dPriorBE
     
+    #The following variable should be commented out before running a simulation, as it is intended to help perform a basic check
+    #to show the number of patients included in the analysis
+    nQtyPatsUsedInAnalysis <- 0
+    
     # Need to loop through the data and update the prior parameters to the posterior parameters.
     # Typically, if building the dataset for analysis is more complicated it is best to create a function to perform that task.
     nQtyPats <- length( vPatOutcome )
     for( iPat in 1:nQtyPats )
     {
         #We only want to include patient outcomes that were observed prior to dCurrentTime
-        #In Example 1 this is less important because we only want to run the analysis after all patient outcomes are observed.
+        #Example 2 - We are adapting the randomization probabilities based on the calculations.  
+        #            Since the patients outcomes are not observed immediately we must check that 
+        #            the vObsTime[ iPat ] <= dCurrent time, eg the patient's outcome was observed
+        #            before the current patient enrolled.   This idea is useful in many contexts
+        #            where the patient outcome is not observed immediately, eg time-to-event.
         if( vObsTime[ iPat ] <= dCurrentTime )
         {
+            nQtyPatsUsedInAnalysis <- nQtyPatsUsedInAnalysis + 1
             if( vTreat[ iPat ] == 0 )  #Treatment S
             {
                 dPostAS <- dPostAS + vPatOutcome[ iPat ]
@@ -36,6 +45,10 @@ RunAnalysis <- function(  dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,
                 stop( paste( "Error: In function RunAnalysis an invalid value in vTreat of ", vTreat[ iPat ], " was sent into the function. ") )
         }  
     }
+    
+    #The following variable should be commented out before running a simulation, as it is intended to help perform a basic check
+    #to show the number of patients included in the analysis
+    print( paste( "....Number of patients included in analysis " ,nQtyPatsUsedInAnalysis ) )
   
     
     dProbSGrtE <- IneqCalcBeta( dPostAS, dPostBS, dPostAE, dPostBE )
