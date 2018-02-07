@@ -48,7 +48,7 @@ RunAnalysis <- function(  dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,
     
     #The following variable should be commented out before running a simulation, as it is intended to help perform a basic check
     #to show the number of patients included in the analysis
-    print( paste( "....Number of patients included in analysis " ,nQtyPatsUsedInAnalysis ) )
+    #print( paste( "....Number of patients included in analysis " ,nQtyPatsUsedInAnalysis ) )
   
     
     dProbSGrtE <- IneqCalcBeta( dPostAS, dPostBS, dPostAE, dPostBE )

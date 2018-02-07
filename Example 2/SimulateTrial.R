@@ -20,7 +20,7 @@ SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, dQtyPatsPerMonth,
     vObsTime    <- SimulateOutcomeObservedTime( vStartTime )
     
     
-    vRandProbE <- c()  #This vector is used to store the randomization probabilities before each patient is enrolled.
+    vRandProbE <- rep( NA, nMaxQtyOfPats ) #This vector is used to store the randomization probabilities before each patient is enrolled.
                        # This is very educational to view when doing adaptive randomization.
     
     #For loop to randomize and simulate the patient outcomes.

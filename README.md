@@ -1,4 +1,4 @@
-# IntroBayesianSimulation
+# Introduction to Bayesian Clinical Trial Simulation
 This repository is an introduction to Bayesian Clinical Trial simulation. 
 
 Often when adaptive designs are used in clinical trials, simulations are utilized to better understand how the adaptation will impact the operating characteristics of the design and probability of a successful trial.  It is in the best interest of the clinical development team and the company developing the trial to consider a wide range of design options, ranging from a traditional approach to the completely adaptive approach and compare various aspects of the trial via simulation.   
