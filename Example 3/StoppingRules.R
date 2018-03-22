@@ -1,6 +1,9 @@
 
 #####################################################################################
-#   Function print out basic simulation results
+#   Function to check the stopping rule.  Stopping rule is only applied
+#   after the nMinQtyOfPats is enrolled.
+#  
+#   Input:
 #####################################################################################
 CheckStoppingRule <- function( nMinQtyOfPats, dPU, nQtyOfPats, dProbSGrtE )
 {

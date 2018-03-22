@@ -1,16 +1,16 @@
 #####################################################################################
 #   Simulate a month of recruitment times   
 #   Input:
-#       dPatsPerMonth - the expected number of patientes accrued in the month
+#       dPatsPerMonth - the expected number of patients accrued in the month
 #       dStartMonth - The month you want recruitments to be in.  The return vector
 #           of recruitment times will in be in [dStartMonth, dStartMonth + 1]
 #####################################################################################
 
 SimulateAMonthOfAccrualTimes <- function( dPatsPerMonth , dStartMonth )
 {
-    # All we know is the rate so using a Poission to generate the number of patients
-    # that are accured this month.  Note, this does not guarntee that nQtyPats will be
-    # Enrolled we just don't wnat to simualte way more than needed in the subsequent lines, but to make 
+    # All we know is the rate so using a Poisson to generate the number of patients
+    # that are accrued this month.  Note, this does not guarantee that nQtyPats will be
+    # Enrolled we just don't want to simulate way more than needed in the subsequent lines, but to make 
     # we simulate enough times from the exponential we increase the number by 20% (eg multiply by 1.2)
     nQtyPats    <- 1.2 * qpois(0.9999,dPatsPerMonth)
     
@@ -32,7 +32,7 @@ SimulateArrivalTimes <- function( vPatsPerMonth, nMaxQtyPats )
     else 
     {
         #There is a ramp up in accrual.  
-        #General idea: SimulateAMonthOfAccrualTimes will simulate 1 month of accrual and a loop will keep concatinate the results
+        #General idea: SimulateAMonthOfAccrualTimes will simulate 1 month of accrual and a loop will keep concatenate the results
         dStartMonth <- 0
         nMonth     <- 1
         while( length( vTimes ) < nMaxQtyPats  )

@@ -1,6 +1,15 @@
-########################################################################
+################################################################################################################################################
 #   This file contains functions for simulating a virtual trial.
-########################################################################
+#
+#   Input:
+#       dMinRandProb: the minimum randomization probability that is desired.
+#           All randomization probabilities will be in the range [ dMinRandProb, 1-dRandProb ]
+#       dExponent:  Randomization Probability to S (dRandProbTrtS)
+#           dRandProbTrtS = (dProbSGrtE)^dExponent/( (dProbSGrtE)^dExponent + (1 - dProbSGrtE)^dExponent )
+#           dRandProbTrtE = 1 - dRandProbTrtS
+#       nQtyPats: The quantity of patients in trial (must be >= nMinQtyOfPats before adapting)
+#       nMinQtyOfPats: The minimum quantity of patients before adapting begins.
+################################################################################################################################################
 
 SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, vQtyPatsPerMonth,
                                  dPriorAS, dPriorBS,
@@ -12,7 +21,7 @@ SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, vQtyPatsPerMonth,
                                  dTrueRespRateE
                                  )
 {
-    #Setup the variables needed in this function
+    #Set up the variables needed in this function
     vPatOutcome         <- rep( NA, nMaxQtyOfPats )       # Vector that contains the patients outcome
     vTreat              <- rep( NA, nMaxQtyOfPats )       # Vector that contains the patients treatment S = 0, E = 1
     vQtyPats            <- rep( 0, 2 )                    # Vector to keep track of the number of patients on S and E 
@@ -34,6 +43,7 @@ SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, vQtyPatsPerMonth,
     {
         #The following line should be commented out before running a simulation, as it is intended to help perform a basic check
         #print( paste( "Randomizing patient " ,i ) )
+        
         dCurrentTime        <- vStartTime[ i ]
         dProbSGrtE          <- RunAnalysis( dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,dPriorBS, dPriorAE, dPriorBE )
         nDecision           <- CheckStoppingRule( nMinQtyOfPats, dPU, i, dProbSGrtE )
@@ -42,7 +52,7 @@ SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, vQtyPatsPerMonth,
         if( nDecision > 1 )
         {
             # The trial is stopping early we do not want to return a vector of patient data with the NAs created above so subset them
-            i               <- i - 1  # i-1 because the ith patient never enrolled, the trial eded first
+            i               <- i - 1  # i-1 because the ith patient never enrolled, the trial ended first
             vPatOutcome     <- vPatOutcome[ 1:i ]
             vTreat          <- vTreat[ 1:i ]
             vStartTime      <- vStartTime[ 1:i ]

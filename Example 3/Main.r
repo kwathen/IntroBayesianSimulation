@@ -21,7 +21,7 @@ source( "StoppingRules.R")
 
 nMaxQtyOfPats       <- 200      # The maximum quantity of patients to enrol in the study
 nMinQtyOfPats       <- 20       # The minimum number of patients enrolled before the trail adapts or stops for futility/superiority
-vQtyPatsPerMonth    <- c( 1, 1.5, 2, 3, 5, 7, 10, 15, 22, 25 )  #Each elment represents the expected # of patients recruited, then the recruitment stays 25/month
+vQtyPatsPerMonth    <- c( 1, 1.5, 2, 3, 5, 7, 10, 15, 22, 25 )  #Each element represents the expected # of patients recruited, then the recruitment stays 25/month
 
 #Priors: Q_S ~ Beta( 0.2, 0.8 ); Q_E ~ Beta( 0.2, 0.8 )
 dPriorAS     <- 0.2  
@@ -49,13 +49,13 @@ nQtyReps        <- 1000     # The number of virtual trials to simulate
 lSimulatedTrial <- SimulateSingleTrial( nMaxQtyOfPats,  nMinQtyOfPats, vQtyPatsPerMonth,  dPriorAS,  dPriorBS, dPriorAE, dPriorBE,  
                                         dPU, dMinRandProb, dExponent,  dTrueRespRateS, dTrueRespRateE  )
 
-#It is often very educational to simulate several trial and plot the randomization probabilities
+#It is often very educational to simulate several trials and plot the randomization probabilities
 nQtyPatsEnrolled <- sum( lSimulatedTrial$vQtyPats )
 plot( 1:nQtyPatsEnrolled, lSimulatedTrial$vRandProbE, type='l', xlab="Patient", ylab="Randomization Probability E", ylim=c(0,1), xlim=c(1,nMaxQtyOfPats), lwd=2 )
 abline( h=c(0.5, dMinRandProb, 1- dMinRandProb), v=20, lty=3)
 
 
-
+#Initialize variables that are used for tracking simulation results
 vResults        <- rep( NA, nQtyReps )                  # Which arm is selected, 1 = no arm, 2 = S, 3 = E
 mQtyPats        <- matrix( NA, ncol=2, nrow = nQtyReps) # The number of patient on each arm
 vStopEarly      <- rep( NA, nQtyReps )                  # Keep track of early stopping; 0 = no early stopping, 1 = early stopping 
@@ -79,4 +79,3 @@ for( i in 1:nQtyReps )
 
 #Create simple summaries
 PrintSummary( vResults, mQtyPats )
-vTotalSampleSize <- mQtyPats[,1] + mQtyPats[,2]

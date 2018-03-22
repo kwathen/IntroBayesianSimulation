@@ -21,7 +21,7 @@ RunAnalysis <- function(  dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,
     for( iPat in 1:nQtyPats )
     {
         #We only want to include patient outcomes that were observed prior to dCurrentTime
-        #Example 2 - We are adapting the randomization probabilities based on the calculations.  
+        #Example 3 - We are adapting the randomization probabilities based on the calculations.  
         #            Since the patients outcomes are not observed immediately we must check that 
         #            the vObsTime[ iPat ] <= dCurrent time, eg the patient's outcome was observed
         #            before the current patient enrolled.   This idea is useful in many contexts
@@ -46,8 +46,9 @@ RunAnalysis <- function(  dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,
         }  
     }
     
-    #The following variable should be commented out before running a simulation, as it is intended to help perform a basic check
+    #The following line should be commented out before running a simulation, as it is intended to help perform a basic check
     #to show the number of patients included in the analysis
+    
     #print( paste( "....Number of patients included in analysis " ,nQtyPatsUsedInAnalysis ) )
   
     

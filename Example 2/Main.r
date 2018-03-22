@@ -45,11 +45,12 @@ nQtyReps        <- 1000     # The number of virtual trials to simulate
 lSimulatedTrial <- SimulateSingleTrial( nMaxQtyOfPats,  nMinQtyOfPats, dQtyPatsPerMonth,  dPriorAS,  dPriorBS, dPriorAE, dPriorBE,  
                                         dPU, dTrueRespRateS, dTrueRespRateE  )
 
-#It is often very educational to simulate several trial and plot the randomization probabilities
+#It is often very educational to simulate several trials and plot the randomization probabilities
 plot( 1:nMaxQtyOfPats, lSimulatedTrial$vRandProbE, type='l', xlab="Patient", ylab="Randomization Probability E", ylim=c(0,1), lwd=2, main =vMain[nSeed] )
 abline( h=0.5, v=20, lty=3)
 
 
+#Initalize variables that are used for tracking simulation results
 vResults <- rep( NA, nQtyReps )
 mQtyPats <- matrix( NA, ncol=2, nrow = nQtyReps)
 
