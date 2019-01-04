@@ -45,7 +45,10 @@ dTrueRespRateE  <- 0.2      # A true response rate of 0.2 for E
 
 nQtyReps        <- 1000     # The number of virtual trials to simulate
 
+####################################################################################################################################
 #It is often best to simulate a single trial and look at the result many times, before launching a loop with many virtual trial
+####################################################################################################################################
+set.seed( 123)
 lSimulatedTrial <- SimulateSingleTrial( nMaxQtyOfPats,  nMinQtyOfPats, vQtyPatsPerMonth,  dPriorAS,  dPriorBS, dPriorAE, dPriorBE,  
                                         dPU, dMinRandProb, dExponent,  dTrueRespRateS, dTrueRespRateE  )
 
@@ -54,6 +57,8 @@ nQtyPatsEnrolled <- sum( lSimulatedTrial$vQtyPats )
 plot( 1:nQtyPatsEnrolled, lSimulatedTrial$vRandProbE, type='l', xlab="Patient", ylab="Randomization Probability E", ylim=c(0,1), xlim=c(1,nMaxQtyOfPats), lwd=2 )
 abline( h=c(0.5, dMinRandProb, 1- dMinRandProb), v=20, lty=3)
 
+
+####################################################################################################################################
 
 #Initialize variables that are used for tracking simulation results
 vResults        <- rep( NA, nQtyReps )                  # Which arm is selected, 1 = no arm, 2 = S, 3 = E
