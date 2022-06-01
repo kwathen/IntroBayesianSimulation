@@ -8,7 +8,7 @@
 CheckStoppingRule <- function( nMinQtyOfPats, dPU, nQtyOfPats, dProbSGrtE )
 {
     nDecision <- 1  
-    if( nQtyOfPats > nMinQtyOfPats )
+    if( nQtyOfPats >= nMinQtyOfPats )
     {
         nDecision <- MakeDecision( dPU, dProbSGrtE, 1-dProbSGrtE)
     }

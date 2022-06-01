@@ -56,5 +56,5 @@ for( i in 1:4 )
     #It is often very educational to simulate several trials and plot the randomization probabilities
     nQtyPatsEnrolled <- sum( lSimulatedTrial$vQtyPats )
     plot( 1:nQtyPatsEnrolled, lSimulatedTrial$vRandProbE, type='l', xlab="Patient", ylab="Randomization Probability E", ylim=c(0,1), xlim=c(1,nMaxQtyOfPats), lwd=2, main= vLabMain[i], cex=1.5 )
-    abline( h=c(0.5, dMinRandProb, 1- dMinRandProb), v=20, lty=3)
+    abline( h=c(0.5, dMinRandProb, 1- dMinRandProb), v=nMinQtyOfPats, lty=3)
 }

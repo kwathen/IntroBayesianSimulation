@@ -21,8 +21,8 @@ SimulateOutcomeObservedTime <- function( vStartTime )
 {
     #Note: A better practice would be to call this functions with inputs for the mean and variance
     #Simulate the average 2 months from treatment to the time the outcome is observed
-    vTimeToOutcome <- rnorm( length( vStartTime ), 2, 0.3 )
-    
+    #vTimeToOutcome <- rnorm( length( vStartTime ), 2, 0.3 )
+    vTimeToOutcome <-  1
     vObsTime <- vStartTime  + vTimeToOutcome
     return( vObsTime )
 }

@@ -58,12 +58,15 @@ SimulateArrivalTimes <- function( vPatsPerMonth, nMaxQtyPats )
 #   Function print out basic simulation results
 #####################################################################################
 
-PrintSummary <- function( vResults, mQtyPats )
+PrintSummary <- function( vResults, mQtyPats, vStopEarly, vTrialLen )
 {
+    nQtyReps <- length( vResults)
     print( paste( "The probability the trial will select no treatment is ", length( vResults[ vResults == 1])/ nQtyReps))
     print( paste( "The probability the trial will select S is ", length( vResults[ vResults == 2])/ nQtyReps))
     print( paste( "The probability the trial will select E is ", length( vResults[ vResults == 3])/ nQtyReps))
-    print( paste( "The probability the trial will stop early is ", length( vStopEarly[ vStopEarly == 1] )/ nQtyReps))
+    print( paste( "The probability the trial will stop early is ", mean( vStopEarly)))
+    
+    print( paste( "The average trial legnth is ", round( mean( vTrialLen), 1)) )
     
     #Compute some simple summaries.  This code block could be easily abstracted to a function to print result.
     vAveQtyPats     <- round( apply( mQtyPats, 2, mean), 1)
@@ -74,9 +77,15 @@ PrintSummary <- function( vResults, mQtyPats )
     dMeanSampleSize  <- round( mean( vTotalSampleSize), 1 ) 
     vConfIntSS       <- round( quantile( vTotalSampleSize, c(0.025, 0.975)), 1)
     
+    dProbSampSizeSGrtEPlus20 <- mean( ifelse( mQtyPats[,1] > mQtyPats[,2] + 20, 1, 0))
+    dProbSampSizeEGrtSPlus20 <- mean( ifelse( mQtyPats[,2] > mQtyPats[,1] + 20, 1, 0))
+    
     print( paste("The average number of patient on S is ", vAveQtyPats[1], " ( ", vConfInt1[1], ", ", vConfInt1[2], " )", sep=""))
     print( paste("The average number of patient on E is ", vAveQtyPats[2], " ( ", vConfInt2[1], ", ", vConfInt2[2], " )", sep=""))
     print( paste("The average number of patient enrolled and 95% CI are ", dMeanSampleSize, " ( ", vConfIntSS[1], ", ", vConfIntSS[2], " )", sep=""))
+    print( paste( "Pr( N_S > N_E + 20 ) = ", round( dProbSampSizeSGrtEPlus20, 2 )))
+    
+    print( paste( "Pr( N_E > N_S + 20 ) = ", round( dProbSampSizeEGrtSPlus20, 2 )))
 }
 
 

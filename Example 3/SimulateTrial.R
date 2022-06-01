@@ -18,7 +18,8 @@ SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, vQtyPatsPerMonth,
                                  dMinRandProb, 
                                  dExponent,
                                  dTrueRespRateS,
-                                 dTrueRespRateE
+                                 dTrueRespRateE,
+                                 nQtyPatsBetweenUpdates = NA
                                  )
 {
     #Set up the variables needed in this function
@@ -45,23 +46,28 @@ SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, vQtyPatsPerMonth,
         #print( paste( "Randomizing patient " ,i ) )
         
         dCurrentTime        <- vStartTime[ i ]
-        dProbSGrtE          <- RunAnalysis( dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,dPriorBS, dPriorAE, dPriorBE )
-        nDecision           <- CheckStoppingRule( nMinQtyOfPats, dPU, i, dProbSGrtE )
-        
-        #If nDecision > 1 then the trial has reached a stopping point and no need to continue randomizing patients
-        if( nDecision > 1 )
+        if(  is.na(nQtyPatsBetweenUpdates) | i %% nQtyPatsBetweenUpdates == 0 | i == 1)
         {
-            # The trial is stopping early we do not want to return a vector of patient data with the NAs created above so subset them
-            i               <- i - 1  # i-1 because the ith patient never enrolled, the trial ended first
-            vPatOutcome     <- vPatOutcome[ 1:i ]
-            vTreat          <- vTreat[ 1:i ]
-            vStartTime      <- vStartTime[ 1:i ]
-            vObsTime        <- vObsTime[ 1:i ]
-            vRandProbE      <- vRandProbE[ 1:i ]
             
-            nEarlyStop       <- 1
-            break           # Break the for loop and do not add any more patients
+            dProbSGrtE          <- RunAnalysis( dCurrentTime, vPatOutcome, vTreat, vObsTime, dPriorAS,dPriorBS, dPriorAE, dPriorBE )
+            nDecision           <- CheckStoppingRule( nMinQtyOfPats, dPU, i, dProbSGrtE )
+            
+            #If nDecision > 1 then the trial has reached a stopping point and no need to continue randomizing patients
+            if( nDecision > 1 )
+            {
+                # The trial is stopping early we do not want to return a vector of patient data with the NAs created above so subset them
+                i               <- i - 1  # i-1 because the ith patient never enrolled, the trial ended first
+                vPatOutcome     <- vPatOutcome[ 1:i ]
+                vTreat          <- vTreat[ 1:i ]
+                vStartTime      <- vStartTime[ 1:i ]
+                vObsTime        <- vObsTime[ 1:i ]
+                vRandProbE      <- vRandProbE[ 1:i ]
+                
+                nEarlyStop       <- 1
+                break           # Break the for loop and do not add any more patients
+            }
         }
+        
         lRand               <- GetTreatmentAdaptiveRandomization( dMinRandProb,  dExponent, i, nMinQtyOfPats, dProbSGrtE ) 
         vTreat[ i ]         <- lRand$nTrt
         vRandProbE[ i ]     <- lRand$dRandProbE
@@ -87,7 +93,7 @@ SimulateSingleTrial <- function( nMaxQtyOfPats, nMinQtyOfPats, vQtyPatsPerMonth,
     #Build the return list - in a large scale simulation you may not want to return the patient data 
     lRet <- list( nDecision = nDecision, dProbEGrtS = 1.0 - dProbSGrtE, vQtyPats = vQtyPats, 
                   vPatOutcome = vPatOutcome, vTreat = vTreat, vStartTime = vStartTime, vObsTime = vObsTime,
-                  vRandProbE = vRandProbE, nEarlyStop = nEarlyStop  )
+                  vRandProbE = vRandProbE, nEarlyStop = nEarlyStop, dFinalAnalysis = dCurrentTime  )
     return( lRet )
     
 }
